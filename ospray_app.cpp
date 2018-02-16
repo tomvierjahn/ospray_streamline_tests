@@ -85,8 +85,14 @@ void OSPRayApp::SetupRenderer() {
 
 void OSPRayApp::SetupLight() {
   auto ambient_light = renderer_->newLight("ambient");
-  // ambient_light.set("intensity", 0.2F);
+  ambient_light.set("intensity", 0.2f);
   ambient_light.commit();
+
+  auto light_handle = ambient_light.handle();
+  ospray::cpp::Data lights(1, OSP_LIGHT, &light_handle);
+  lights.commit();
+  renderer_->set("lights", lights);
+  renderer_->commit();
 }
 
 void OSPRayApp::Render() {
